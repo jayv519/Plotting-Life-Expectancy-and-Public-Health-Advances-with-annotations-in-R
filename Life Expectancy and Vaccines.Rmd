@@ -1,0 +1,144 @@
+---
+title: "Plotting U.S. Life Expectancy and Public Health Advances"
+author: "Jorge Valderrama"
+date: "2024-2-4"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+```{r}
+library(tidyverse)
+library(ggthemes)
+vaccine <- tribble(
+  ~Year, ~Age,
+  '1775',35,
+  '1780', 35,
+  '1785', 35,
+  '1790', 37,
+  '1795', 39,
+  '1800', 39,
+  '1805', 39,
+  '1810', 40,
+  '1815', 39,
+  '1820', 39,
+  '1825', 39,
+  '1830', 38,
+  '1835', 40,
+  '1840', 41,
+  '1845', 41,
+  '1850', 39,
+  '1855', 40,
+  '1860', 39,
+  '1865', 39,
+  '1870', 39,
+  '1875', 40,
+  '1880', 40,
+  '1885', 39,
+  '1890', 40,
+  '1895', 47,
+  '1900', 49,
+  '1905', 51,
+  '1910', 52,
+  '1915', 54,
+  '1920', 54,
+  '1925', 57,
+  '1930', 59,
+  '1935', 60,
+  '1940', 62,
+  '1945', 64,
+  '1950', 68,
+  '1955', 69,
+  '1960', 70,
+  '1965', 70,
+  '1970', 70,
+  '1975', 73,
+  '1980', 74,
+  '1985', 74,
+  '1990', 75,
+  '1995', 76,
+  '2000', 77,
+  '2005', 77,
+  '2010', 78,
+  '2015', 78,
+  '2020', 78
+)
+```
+
+```{r}
+vaccine_life <- vaccine
+
+vaccine_life
+```
+
+```{r}
+vaccine_life <- vaccine_life %>%
+  mutate(Year = as.numeric(Year))
+```
+
+```{r}
+glimpse(vaccine_life)
+```
+
+```{r}
+ggplot(vaccine_life, aes(y = Age, x = factor(Year), group = 1, color = "red")) +
+  geom_line() +
+  theme_clean() +
+  ggtitle("Life Expectancy in the United States") +
+  theme(axis.text.x = element_text(angle = 60, hjust = 1, face = "bold")) +
+  theme(axis.title.y = element_text(size = 17, face = "bold")) +
+  theme(plot.title = element_text(hjust = 0.5, lineheight = 0.9)) +
+  theme(plot.title = element_text(face = "bold", size = 14)) +
+  theme(axis.title.x = element_blank()) +
+  theme(legend.position = "none") +  # Remove the legend
+  scale_y_continuous(limits = c(25, 80)) +
+  labs(y = "Life Expectancy in Years") +
+  theme(plot.subtitle = element_text(hjust = 0.5)) +
+  scale_x_discrete(breaks = seq(1780, 2020, by = 10)) # Set breaks for 10-year intervals
+```
+
+```{r}
+ggplot(vaccine_life, aes(y = Age, x = Year, group = 1, color = "red"))+
+ geom_line(size = 1)+
+  theme_clean()+
+  ggtitle("Charting U.S. Longevity:")+
+  theme(axis.text.x=element_text(angle=60, hjust=1, face = "bold"))+
+  theme(axis.title.y=element_text(size=13,face="bold"))+
+  theme(plot.title = element_text(hjust = 0.5, lineheight = 0.9))+
+  theme(plot.title = element_text(face = "bold", size = 15))+
+  theme(axis.title.x = element_blank())+
+   theme(legend.position = "none") +  # Remove the legend
+  scale_y_continuous(limits=c(25,80))+
+  labs(y = "Life Expectancy in Years")+
+  theme(plot.subtitle = element_text(hjust=0.5))+
+  
+  annotate(geom = "curve", x = 1810, y= 31, xend = 1800, yend = 39, curvature = .1, arrow = arrow(length = unit(2,"mm")))+
+  annotate(geom = "text", x = 1785, y = 30, label = "Smallpox Vaccine", hjust = "left")+
+  
+  annotate(geom = "curve", x = 1952, y= 51, xend = 1945, yend = 63.5, curvature = .1, arrow = arrow(length = unit(2,"mm")))+
+  annotate(geom = "text", x = 1945, y = 50, label = "Flu Vaccine", hjust = "left")+
+  
+  annotate(geom = "curve", x = 1975, y= 61, xend = 1955, yend = 69, curvature = .1, arrow = arrow(length = unit(2,"mm")))+
+  annotate(geom = "text", x = 1960, y = 60, label = "Polio Vaccine", hjust = "left")+
+  
+  annotate(geom = "curve", x = 1985, y= 66, xend = 1971, yend = 70, curvature = .1, arrow = arrow(length = unit(2,"mm")))+
+  annotate(geom = "text", x = 1980, y = 64.5, label = "MMR Vaccine", hjust = "left")+
+  
+  annotate(geom = "curve", x = 1957, y= 56.5, xend = 1948, yend = 66, curvature = .1, arrow = arrow(length = unit(2,"mm")))+
+  annotate(geom = "text", x = 1955, y = 55, label = "Diphtheria Vaccine", hjust = "left")+
+  
+  annotate(geom = "curve", x = 1890, y= 31, xend = 1885, yend = 39, curvature = .1, arrow = arrow(length = unit(2,"mm")))+
+  annotate(geom = "text", x = 1860, y = 30, label = "Germ Theory of Disease", hjust = "left")+
+  
+  annotate(geom = "curve", x = 1940, y= 43.5, xend = 1915, yend = 53.5, curvature = .1, arrow = arrow(length = unit(2,"mm")))+
+  annotate(geom = "text", x = 1920, y = 42, label = "Antibiotic Development", hjust = "left")+
+  
+  annotate(geom = "curve", x = 1920, y= 36, xend = 1900, yend = 48.5, curvature = .1, arrow = arrow(length = unit(2,"mm")))+
+  annotate(geom = "text", x = 1905, y = 35, label = "Improved Sanitation", hjust = "left")+
+  
+  labs(subtitle = "How Public Health Advances Extended Lives")+
+  theme(plot.subtitle = element_text(face = "bold", size = 15))+
+  scale_x_continuous(breaks = seq(1780, 2020, by = 20)) # Add this line for 10-year intervals
+```
